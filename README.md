@@ -3,9 +3,9 @@
 # download source
 
 ```
-git clone --depth=1 -b sg200x https://github.com/LubanCat/sophon-image-build.git
+git clone --depth=1 -b sg200x https://github.com/Cjiio/linuxkit.git
 
-cd sophon-image-build
+cd linuxkit
 
 git clone https://github.com/sophgo/host-tools --depth=1
 ```
