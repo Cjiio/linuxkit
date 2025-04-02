@@ -2,7 +2,7 @@
 
 if [ "${1}" = start ]
 then
-	prefix=lubancat
+	prefix=linuxkit
 	if [ -e /boot/hostname.prefix ]
 	then
 		prefix=$(cat /boot/hostname.prefix)

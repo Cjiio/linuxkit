@@ -26,8 +26,9 @@ insmod /mnt/system/ko/soph_vc_driver.ko MaxVencChnNum=9 MaxVdecChnNum=9
 insmod /mnt/system/ko/soph_rtc.ko
 insmod /mnt/system/ko/soph_ive.ko
 
-insmod /mnt/system/ko/3rd/8821cs.ko
-insmod /mnt/system/ko/3rd/gt9xx.ko
+insmod /mnt/system/ko/3rd/aic8800_bsp.ko
+insmod /mnt/system/ko/3rd/aic8800_fdrv.ko
+
 insmod /mnt/system/ko/soph_saradc.ko
 insmod /mnt/system/ko/soph_pwm.ko
 

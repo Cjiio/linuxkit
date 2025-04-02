@@ -87,11 +87,6 @@ KO_LIST += wireless
 OTHERS += cp_ext_wireless
 endif
 
-ifeq (y, ${CONFIG_CP_EXT_EBF_WIFI})
-KO_LIST += ebf_wifi
-OTHERS += cp_ext_ebf_wifi
-endif
-
 ifeq (, ${CONFIG_NO_TP})
 	KO_LIST += tp
 	OTHERS += cp_ext_tp

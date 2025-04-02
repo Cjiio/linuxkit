@@ -9,64 +9,36 @@
 #include <dt-bindings/input/linux-event-codes.h>
 
 / {
-	model = "Embedfire LubanCat-P1";
+	model = "Linux-Kit Core";
 
-	sd:cv-sd@4310000 {
-        min-frequency = <400000>; // 400Khz
-        //max-frequency = <50000000>; // 50Mhz
-        max-frequency = <25000000>; // 25Mhz
-        //max-frequency = <10000000>; // 10Mhz
-        //max-frequency = <5000000>; // 5Mhz
-	};
-
-    leds: leds {
-    status = "okay";
-    compatible = "gpio-leds";
-
-    sys_status_led: sys-status-led {
-        label = "sys_status_led";
-        linux,default-trigger = "heartbeat";
-        default-state = "on";
-        gpios = <&portb 11 GPIO_ACTIVE_LOW>;
-        };
-    };
-
-	wifi_pwr_en: wifi_pwr_en {
-		compatible = "regulator-fixed";
-		regulator-name = "wifi_pwr_en";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		gpio = <&porte 1 GPIO_ACTIVE_HIGH>;
-		regulator-always-on;
-		enable-active-high;
-	};
-
-	usb_host_en: usb_host_en {
-		compatible = "regulator-fixed";
-		regulator-name = "usb_host_en";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		gpio = <&porte 13 GPIO_ACTIVE_HIGH>;
-		regulator-always-on;
-		enable-active-high;
-	};
-
-	sgpio_keys: sgpio-keys {
-		status = "okay";
-		compatible = "gpio-keys";
-
-			Key0{
-				label = "usr_key";
-				linux,code=<KEY_0>;
-				gpios = <&portb 4 IRQ_TYPE_LEVEL_LOW>;
-			};
-
-			Key1{
-				label = "pwr_key";
-				linux,code=<KEY_POWER>;
-				gpios = <&porte 8 IRQ_TYPE_LEVEL_LOW>;
-			};
-		};
+      wifisd:wifi-sd@4320000 {
+            compatible = "cvitek,cv181x-sdio";
+            bus-width = <4>;
+            reg = <0x0 0x4320000 0x0 0x1000>;
+            reg_names = "core_mem";
+            src-frequency = <375000000>;
+            min-frequency = <400000>; // 400Khz
+            //max-frequency = <50000000>; // 50Mhz
+            //max-frequency = <45000000>; // 45Mhz
+            //max-frequency = <40000000>; // 40Mhz
+            //max-frequency = <35000000>; // 35Mhz
+            //max-frequency = <30000000>; // 30Mhz
+            max-frequency = <25000000>; // 25Mhz
+            //max-frequency = <20000000>; // 20Mhz
+            //max-frequency = <15000000>; // 15Mhz
+            //max-frequency = <10000000>; // 10Mhz
+            //max-frequency = <5000000>; // 5Mhz
+            64_addressing;
+            reset_tx_rx_phy;
+            non-removable;
+            pll_index = <0x7>;
+            pll_reg = <0x300207C>;
+            no-mmc;
+            no-sd;
+            status = "okay";
+            interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
+            interrupt-parent = <&plic0>;
+      };
 };
 
 &wifisd {
@@ -74,8 +46,8 @@
 };
 
 &wifi_pin {
-	poweron-gpio = <&porta 4 GPIO_ACTIVE_HIGH>;
-	wakeup-gpio = <&porta 0 GPIO_ACTIVE_HIGH>;
+	poweron-gpio = <&portb 22 GPIO_ACTIVE_HIGH>;
+	wakeup-gpio = <&porte 0 GPIO_ACTIVE_HIGH>;
 };
 
 &mipi_rx {
@@ -90,11 +62,28 @@
 &i2c2 {
 	clock-frequency = <100000>;
 	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+    
+      lsm6dsr: lsm6dsr@6a {
+            compatible = "st,lsm6dsr";
+            reg = <0x6a>;
+            interrupt-parent = <&porte>;
+            interrupts = <8 IRQ_TYPE_EDGE_RISING>;
+      };
+
+      atecc608a: atecc608a@60 {
+            compatible = "sferalabs,atecc";
+            reg = <0x60>;
+            status = "okay";
+      };
 };
 
 &i2c3 {
 	clock-frequency = <100000>;
 	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
 };
 
 &i2c4 {
@@ -102,18 +91,61 @@
 	status = "okay";
 	#address-cells = <1>;
 	#size-cells = <0>;
+	
+	sw42000_sub: sw42000_sub@28 {
+            status = "ok";
+            compatible = "lge_sub,sw42000_sub";
 
-	gt911: gt911@14 {
-			compatible = "goodix,gt9xx";
-			reg = <0x14>;
-			status = "okay";
-			goodix,irq-gpio = <&portb 22 GPIO_ACTIVE_HIGH>;
-			goodix,rst-gpio = <&portb 12 GPIO_ACTIVE_LOW>;
-		};
+            reg = <0x28>;
+            interrupt-parent = <&porta>;
+            interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
+            irqflags = <IRQ_TYPE_EDGE_FALLING>;
+
+            reset-gpio = <&porta 2 GPIO_ACTIVE_LOW>;
+            irq-gpio = <&porta 3 GPIO_ACTIVE_LOW>;
+
+            /* Caps */
+            max_x = <1080>;
+            max_y = <1240>;
+            max_pressure = <0xff>;
+            max_width_major = <1080>;
+            max_width_minor = <1240>;
+            max_orientation = <90>;
+            max_id = <10>;
+            hw_reset_delay = <40>;
+            sw_reset_delay = <40>;
+
+            /* role */
+            use_lpwg = <1>;
+            use_lpwg_test = <1>;
+            hide_coordinate = <1>;
+            use_activepen_status = <0>;
+            use_film_status = <1>;
+            use_dex_mode = <1>;
+
+            /* Firmware */
+            fw_image = "touch/winglm/V1W39WING_v0.18.img";
+            panel_spec = "touch/winglm/wing_sw42000_limit.txt";
+            panel_spec_mfts_folder = "touch/winglm/wing_sw42000_limit.txt";
+
+            /* Performance Test */
+            use_perf_test = <1>;
+            test_delay = <8>;
+            test_pressure = <50>;
+            test_width = <100>;
+            click_test_x = <180>;
+            click_test_y = <838>;
+            v_drag_test_x = <144>;
+            v_drag_test_start_y = <2103>;
+            v_drag_test_end_y = <1216>;
+            h_drag_test_start_x = <1163>;
+            h_drag_test_end_x = <276>;
+            h_drag_test_y = <2284>;
+    };
 };
 
 &mipi_tx {
-	reset-gpio = <&portb 15 GPIO_ACTIVE_LOW>;
+	reset-gpio = <&porta 0 GPIO_ACTIVE_LOW>;
 	pwm-gpio = <&portb 19 GPIO_ACTIVE_HIGH>;
 	power-ct-gpio = <&porte 12 GPIO_ACTIVE_HIGH>;
 };
@@ -123,6 +155,14 @@
 };
 
 &uart2 {
+	status = "okay";
+};
+
+&uart3 {
+	status = "okay";
+};
+
+&uart4 {
 	status = "okay";
 };
 

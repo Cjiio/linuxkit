@@ -26,8 +26,9 @@ insmod /mnt/system/ko/cvi_vc_driver.ko
 insmod /mnt/system/ko/cv181x_rtc.ko
 insmod /mnt/system/ko/cv181x_ive.ko
 
-insmod /mnt/system/ko/3rd/8821cs.ko
-insmod /mnt/system/ko/3rd/gt9xx.ko
+insmod /mnt/system/ko/3rd/aic8800_bsp.ko
+insmod /mnt/system/ko/3rd/aic8800_fdrv.ko
+
 insmod /mnt/system/ko/cv181x_saradc.ko
 insmod /mnt/system/ko/cv181x_pwm.ko
 

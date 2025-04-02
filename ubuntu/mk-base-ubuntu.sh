@@ -77,7 +77,7 @@ fi
     whiptail gnupg bc gdisk parted sox libsox-fmt-all gpiod libgpiod-dev \
     u-boot-tools bsdmainutils file fdisk bluez
 
-HOST=lubancat
+HOST=linuxkit
 
 # Create User
 useradd -G sudo -m -s /bin/bash cat
@@ -96,7 +96,7 @@ IEOF
 sed -i '/pam_securetty.so/s/^/# /g' /etc/pam.d/login
 
 # hostname
-echo lubancat > /etc/hostname
+echo linuxkit > /etc/hostname
 
 # set localtime
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime

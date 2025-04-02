@@ -44,8 +44,8 @@ start() {
 			cp /boot/wpa_supplicant.conf /etc/wpa_supplicant.conf
 		else
 			echo "wifi mode: sta"
-			ssid="lubancat"
-			pass="lubancat"
+			ssid="linuxkit"
+			pass="linuxkit"
 			if [ -e /boot/wifi.ssid ]
 			then
 				echo -n "ssid: "
@@ -87,8 +87,8 @@ start() {
 			then
 				id3=254
 			fi
-			ssid="lubancat-${id2}${id3}"
-                        pass="lubancat"
+			ssid="linuxkit-${id2}${id3}"
+                        pass="linuxkit"
                         if [ -e /boot/wifi.ssid ]
                         then
                                 echo -n "ssid: "

@@ -1,1 +1,1 @@
-../../build/output/sg2000_lubancat_riscv_ubuntu_sd/cvi_board_memmap.h
+../../build/output/sg2000_linuxkit_riscv_ubuntu_emmc/cvi_board_memmap.h
